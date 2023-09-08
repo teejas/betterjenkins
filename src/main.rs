@@ -1,14 +1,16 @@
-use config::Config;
-use std::error::Error;
+use actix_web::{App, HttpServer};
 
 mod config;
+mod server;
 
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn Error>> {
-    let f = std::fs::File::open("examples/sample.yaml")?;
-    let mut c: Config = serde_yaml::from_reader(f)?;
-
-    let _ = c.push_tasks().await?;
-
-    Ok(())
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    HttpServer::new(|| {
+        App::new()
+            .service(server::index)
+            .service(server::process_upload)
+    })
+    .bind(("127.0.0.1", 8080))?
+    .run()
+    .await
 }

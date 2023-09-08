@@ -12,15 +12,11 @@ use sqlx::{
 pub struct Config {
   name: String,
   author: String,
-  #[serde(default="no_description")]
+  #[serde(default)]
   description: String,
   stages: HashMap<String, String>,
   #[serde(skip)]
   db_connection: Option<PgConnection>
-}
-
-fn no_description() -> String {
-  "no description".to_string()
 }
 
 impl Config {

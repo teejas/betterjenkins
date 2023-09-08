@@ -6,7 +6,10 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+actix-files = "*"
+actix-multipart = "*"
+actix-web = "4"
 serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.9"
-tokio = { version = "1", features = ["full"] }
 sqlx = { version = "0.7", features = [ "runtime-tokio", "tls-native-tls", "postgres", "macros" ] }
+tokio = { version = "1", features = ["full"] }
