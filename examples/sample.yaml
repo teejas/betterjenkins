@@ -1,8 +1,0 @@
-name: test-pipeline
-author: tester
-description: first test pipeline template
-
-stages:
-  stage_1: echo "hello world"
-  stage_2: sleep 30
-  stage_3: echo "done"
