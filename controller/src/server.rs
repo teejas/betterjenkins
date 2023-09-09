@@ -52,7 +52,7 @@ pub async fn process_upload(body: Payload) -> Result<fs::NamedFile, Box<dyn Erro
                       eprintln!("Error reading file or file was empty");
                   } else {
                       let mut c: Config = serde_yaml::from_str(uploaded_file)?;
-                      let _ = c.push_tasks().await?;
+                      c.push_tasks().await?;
                   }
               }
           }

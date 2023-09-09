@@ -77,8 +77,8 @@ VALUES ($1, $2, $3);
 
       for (key, stage_def) in self.stages.iter() {
           println!("{}: {}", key, stage_def);
-          let stage_num = key.split("_").last().unwrap_or("");
-          if stage_num != "" {
+          let stage_num = key.split('_').last().unwrap_or("");
+          if !stage_num.is_empty() {
             sqlx::query(
                 "
   INSERT INTO tasks (job_name, stage_number, definition)
