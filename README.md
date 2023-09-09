@@ -36,5 +36,3 @@ cd /executor
 docker build -t betterjenkins:executor .
 docker run --network betterjenkins_default betterjenkins:executor
 ```
-\
-blah
