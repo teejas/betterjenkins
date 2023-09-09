@@ -27,3 +27,12 @@ Going to use PostgreSQL instead of Redis because it gives more flexibility in te
 `/executor` contains all files related to the task executor, this includes a Dockerfile to build the executor image and a shell script which simply takes a task from the "tasks" SQL table and runs it
 
 `/examples` contains sample yaml task files and templates
+
+# Useful Commands
+
+The executor is run independent of the server and database, to build and run its image run the following:
+```
+cd /executor
+docker build -t betterjenkins:executor .
+docker run --network betterjenkins_default betterjenkins:executor
+```

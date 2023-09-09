@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: betterjenkins-server
+  labels:
+    app.kubernetes.io/name: betterjenkins
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: betterjenkins
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: betterjenkins
+    spec:
+      containers:
+      - name: betterjenkins-server
+        image: tj1997/betterjenkins:server
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_NAME
+          value: betterjenkins
+        - name: DB_HOST
+          value: betterjenkins-db
+        - name: DB_USER
+          value: postgres
+        - name: DB_PASSWORD
+          value: postgres
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: betterjenkins-server
+spec:
+  selector:
+    app.kubernetes.io/name: betterjenkins
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
