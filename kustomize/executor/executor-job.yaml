@@ -19,4 +19,4 @@ spec:
         - name: DB_PASSWORD
           value: postgres
       restartPolicy: Never
-  backoffLimit: 4
+  backoffLimit: 5
