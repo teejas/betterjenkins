@@ -1,0 +1,1 @@
+CREATE DATABASE betterjenkins WITH OWNER = postgres;
