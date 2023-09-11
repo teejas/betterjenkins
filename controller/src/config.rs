@@ -10,6 +10,8 @@ use sqlx::{
   Row
 };
 
+use crate::db::{DBConn};
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
   name: String,
@@ -21,47 +23,9 @@ pub struct Config {
   db_connection: Option<PgConnection>
 }
 
-pub async fn connect_to_db() -> Result<PgConnection, Box<dyn Error>> {
-  Ok(PgConnection::connect(
-    &format!("postgresql://{}:{}@{}/{}", 
-      env::var("DB_USER").unwrap(),
-      env::var("DB_PASSWORD").unwrap(), 
-      env::var("DB_HOST").unwrap(), 
-      env::var("DB_NAME").unwrap()
-    )[..]
-  ).await?)
-}
-
 impl Config {
   async fn init(&mut self) -> Result<(), Box<dyn Error>> {
-    self.db_connection = Some(connect_to_db().await?);
-    sqlx::query(
-        "
-  CREATE TABLE IF NOT EXISTS jobs (
-  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  name VARCHAR(255) NOT NULL,
-  job_count INTEGER NOT NULL,
-  author VARCHAR(255) NOT NULL,
-  description VARCHAR(255)
-  );
-        "
-      )
-      .execute(self.db_connection.as_mut().unwrap())
-      .await?;
-
-    sqlx::query(
-        "
-  CREATE TABLE IF NOT EXISTS tasks (
-  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  job_name VARCHAR(255) NOT NULL,
-  stage_number VARCHAR(255) NOT NULL,
-  definition VARCHAR(255) NOT NULL
-  );
-        "
-      )
-      .execute(self.db_connection.as_mut().unwrap())
-      .await?;
-
+    self.db_connection = Some(DBConn::new().await?.conn);
     Ok(())
   }
 

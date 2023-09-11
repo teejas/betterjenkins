@@ -1,0 +1,9 @@
+name: test-pipeline-complex
+description: missing 'author' field so this should fail
+
+stages:
+  stage_1: cd /bin && ls
+  stage_2: pwd
+  stage_3: pip list
+  stage_4: cat run_task.py
+  stage_5: echo "done"

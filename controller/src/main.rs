@@ -2,6 +2,7 @@ use actix_web::{App, HttpServer};
 use dotenv::dotenv;
 
 mod config;
+mod db;
 mod server;
 mod run;
 use run::run_executors;
