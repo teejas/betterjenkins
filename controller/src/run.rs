@@ -46,11 +46,18 @@ pub async fn run_executors() -> i64 {
       // let j = jobs.get("betterjenkins-server-6645d8477c-c88wg").await.unwrap();
       // println!("Got betterjenkins-server pod with containers: {:?}", p.spec.unwrap().containers);
       d.metadata.name = Some(format!("{}-{}", d.metadata.name.ok_or("unnamed").unwrap(), existing_jobs.items.len() + 1));
-      jobs.create(&pp, &d).await.unwrap();
-      std::thread::sleep(std::time::Duration::from_secs(5));
+      let create_job = jobs.create(&pp, &d).await;
+      match create_job {
+        Err(err) => {
+          eprintln!("Failed to create job, error: {:?}", err);
+          std::thread::sleep(std::time::Duration::from_secs(5));
+        },
+        _ => {}
+      }
     } else {
       println!("No tasks or last task not completed");
       std::thread::sleep(std::time::Duration::from_secs(5));
+      tasks_count = 0;
     }
   }
   tasks_count

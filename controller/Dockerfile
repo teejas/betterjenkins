@@ -2,9 +2,7 @@ FROM rust:1
 
 WORKDIR /betterjenkins
 
-COPY ./src ./src
-COPY ./web ./web
-COPY ./Cargo.toml ./Cargo.toml
+COPY ./ ./
 
 RUN cargo build --release
 
