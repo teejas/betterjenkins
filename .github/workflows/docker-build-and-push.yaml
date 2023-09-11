@@ -20,13 +20,13 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push executor
         uses: docker/build-push-action@v4
-        working-directory: ./executor
         with:
+          working-directory: ./executor
           push: true
           tags: tj1997/betterjenkins:executor
       - name: Build and push server
         uses: docker/build-push-action@v4
-        working-directory: ./controller
         with:
           push: true
           tags: tj1997/betterjenkins:executor
+          working-directory: ./controller
