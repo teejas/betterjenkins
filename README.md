@@ -2,8 +2,6 @@
 
 I want to build a better version of Jenkins in Rust. Part of the project is learning and understanding Rust better, while also learning and understanding the requirements of a CI/CD software project.
 
-Going to use PostgreSQL instead of Redis because it gives more flexibility in terms of having multiple tables for related dawta, one for jobs and one for tasks (stages of a job) to be run.
-
 # Steps
 1. Create a Rust program which can parse a file (i.e. toml or yaml) for tasks, then add those tasks to a Postgres DB [done]
 2. Create a web server that allows users to drop .yaml files and add tasks to the queue. [done]
@@ -31,7 +29,7 @@ Going to use PostgreSQL instead of Redis because it gives more flexibility in te
 
 `/controller/k8s_manifests` contains any K8s manifests the controller uses to create resources via the K8s API
 
-`/executor` contains all files related to the task executor, this includes a Dockerfile to build the executor image and a shell script which simply takes a task from the "tasks" SQL table and runs it
+`/executor` contains all files related to the task executor, this includes a Dockerfile to build the executor image and a Python script which simply takes a task from the "tasks" SQL table and runs it
 
 `/kustomize` contains K8s manifests to deploy the betterjenkins and Postgres servers
 
