@@ -2,6 +2,8 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: betterjenkins-executor
+  labels:
+    app: betterjenkins-executor
 spec:
   ttlSecondsAfterFinished: 0
   template:
@@ -9,6 +11,7 @@ spec:
       containers:
       - name: betterjenkins-executor
         image: tj1997/betterjenkins:executor
+        imagePullPolicy: Always
         env:
         - name: DB_NAME
           value: betterjenkins

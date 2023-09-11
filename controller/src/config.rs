@@ -66,20 +66,20 @@ impl Config {
   }
 
   pub async fn push_tasks(&mut self) -> Result<(), Box<dyn Error>> {
-    if self.db_connection.is_none() {
-      self.init().await?;
-    }
-    let query_response = sqlx::query(
+    self.init().await?;
+    let q = sqlx::query(
         "
 SELECT (job_count) FROM jobs WHERE name = $1 ORDER BY job_count DESC LIMIT 1;
         "
       )
       .bind(&self.name)
-      .fetch_one(self.db_connection.as_mut().unwrap())
+      .fetch_all(self.db_connection.as_mut().unwrap())
       .await?;
     
-    let job_count = query_response.get::<i32, &str>("job_count") + 1;
-    println!("{}", job_count);
+    let mut job_count = 1;
+    if let Some(query_response) = q.first() {
+      job_count = query_response.get::<i32, &str>("job_count") + 1;
+    }
     let _ = sqlx::query(
         "
 INSERT INTO jobs (name, job_count, author, description)
