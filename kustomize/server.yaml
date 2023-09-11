@@ -17,6 +17,7 @@ spec:
       containers:
       - name: betterjenkins-server
         image: tj1997/betterjenkins:server
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         env:
