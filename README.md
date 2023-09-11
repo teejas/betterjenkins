@@ -14,7 +14,7 @@ Going to use PostgreSQL instead of Redis because it gives more flexibility in te
 
 ## Tables
 - Jobs (`jobs`)
-  - Schema: (id, job_name, author, description)
+  - Schema: (id, name, job_count [if there are duplicate instances of the same job], author, description)
 - Tasks (`tasks`)
   - Schema: (id, job_name, stage_number, definition)
 
