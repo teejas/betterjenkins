@@ -79,7 +79,7 @@ SELECT (job_count) FROM jobs WHERE name = $1 ORDER BY job_count DESC LIMIT 1;
       .await?;
     
     let job_count = query_response.get::<i32, &str>("job_count") + 1;
-    println!("{}", job_count.to_string());
+    println!("{}", job_count);
     let _ = sqlx::query(
         "
 INSERT INTO jobs (name, job_count, author, description)

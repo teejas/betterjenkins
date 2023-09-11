@@ -1,10 +1,6 @@
-use actix_web::{App, HttpServer};
-use dotenv::dotenv;
 use k8s_openapi::api::batch::v1::Job;
 use kube::{Api, Client, core::params::PostParams};
-use tokio;
 use sqlx::Row;
-use serde_yaml;
 
 use crate::config::connect_to_db;
 
