@@ -3,5 +3,6 @@ kind: Kustomization
 namespace: betterjenkins
 resources:
 - namespace.yaml
+- service-account.yaml
 - db.yaml
 - server.yaml

@@ -3,17 +3,18 @@ kind: Deployment
 metadata:
   name: betterjenkins-server
   labels:
-    app: betterjenkins
+    app: betterjenkins-server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: betterjenkins
+      app: betterjenkins-server
   template:
     metadata:
       labels:
-        app: betterjenkins
+        app: betterjenkins-server
     spec:
+      serviceAccountName: betterjenkins
       containers:
       - name: betterjenkins-server
         image: tj1997/betterjenkins:server
@@ -35,10 +36,10 @@ kind: Service
 metadata:
   name: betterjenkins-server
   labels:
-    app: betterjenkins
+    app: betterjenkins-server
 spec:
   selector:
-    app: betterjenkins
+    app: betterjenkins-server
   ports:
   - protocol: TCP
     port: 8080

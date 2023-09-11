@@ -11,16 +11,16 @@ kind: Deployment
 metadata:
   name: betterjenkins-db
   labels:
-    app: betterjenkins
+    app: betterjenkins-db
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: betterjenkins
+      app: betterjenkins-db
   template:
     metadata:
       labels:
-        app: betterjenkins
+        app: betterjenkins-db
     spec:
       volumes:
       - name: psql-initdb
@@ -45,11 +45,11 @@ kind: Service
 metadata:
   name: betterjenkins-db
   labels:
-    app: betterjenkins
+    app: betterjenkins-db
 spec:
   type: NodePort
   ports:
   - port: 5432
     targetPort: 5432
   selector:
-    app: betterjenkins
+    app: betterjenkins-db

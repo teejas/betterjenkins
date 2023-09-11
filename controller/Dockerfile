@@ -13,7 +13,7 @@ COPY ./src ./src
 RUN touch src/main.rs
 RUN cargo build --release
 
-FROM rust:1 as runner
+FROM rust:1-slim as runner
 
 COPY --from=builder ./betterjenkins/target/release/betterjenkins ./target/release/betterjenkins
 COPY ./web ./web

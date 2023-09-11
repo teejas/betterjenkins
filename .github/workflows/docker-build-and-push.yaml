@@ -25,10 +25,10 @@ jobs:
           platforms: linux/arm64,linux/amd64
           push: true
           tags: tj1997/betterjenkins:executor
-      - name: Build and push server
-        uses: docker/build-push-action@v4
-        with:
-          context: "{{defaultContext}}:controller"
-          platforms: linux/arm64,linux/amd64
-          push: true
-          tags: tj1997/betterjenkins:server
+      # - name: Build and push server
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: "{{defaultContext}}:controller"
+      #     platforms: linux/arm64,linux/amd64
+      #     push: true
+      #     tags: tj1997/betterjenkins:server
