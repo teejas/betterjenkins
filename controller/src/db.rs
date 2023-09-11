@@ -1,13 +1,10 @@
 use std::{
   env,
-  collections::HashMap,
   error::Error
 };
-use serde::{Serialize, Deserialize};
 use sqlx::{
   postgres::PgConnection,
-  Connection,
-  Row
+  Connection
 };
 
 pub struct DBConn {

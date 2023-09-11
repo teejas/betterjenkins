@@ -2,7 +2,6 @@ use k8s_openapi::api::batch::v1::Job;
 use kube::{Api, Client, api::ListParams, core::params::PostParams};
 use sqlx::Row;
 
-use crate::config;
 use crate::db::DBConn;
 
 pub async fn run_executors() -> i64 {
