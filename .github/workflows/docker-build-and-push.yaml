@@ -21,13 +21,12 @@ jobs:
       - name: Build and push executor
         uses: docker/build-push-action@v4
         with:
-          context: executor
+          context: /executor
           push: true
           tags: tj1997/betterjenkins:executor
       - name: Build and push server
         uses: docker/build-push-action@v4
         with:
-          context: controller
+          context: /controller
           push: true
           tags: tj1997/betterjenkins:server
-          
