@@ -1,0 +1,10 @@
+name: test-pipeline-complex
+author: tester
+description: more complex test pipeline
+
+stages:
+  stage_1: cd /bin && ls
+  stage_2: pwd
+  stage_3: pip list
+  stage_4: cat run_task.py
+  stage_5: echo "done"
