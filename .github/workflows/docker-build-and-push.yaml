@@ -22,13 +22,13 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: "{{defaultContext}}:executor"
-          platforms: linux/arm/v8
+          platforms: linux/arm/v7
           push: true
           tags: tj1997/betterjenkins:executor
       - name: Build and push server
         uses: docker/build-push-action@v4
         with:
           context: "{{defaultContext}}:controller"
-          platforms: linux/arm/v8
+          platforms: linux/arm/v7
           push: true
           tags: tj1997/betterjenkins:server
