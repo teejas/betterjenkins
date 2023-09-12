@@ -1,26 +1,19 @@
-use actix_web::{App, HttpServer};
+use actix_web::{rt, App, HttpServer, dev::Server};
 use dotenv::dotenv;
+use tokio::{self, signal, task};
+use tokio_util::sync::CancellationToken;
+use std::error::Error;
 
 mod config;
 mod db;
 mod server;
 mod run;
 use run::run_executors;
+mod threads;
+use threads::start_threads;
 
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
+#[tokio::main]
+async fn main() {
   dotenv().ok();
-
-  tokio::spawn(async {
-    run_executors().await
-  });
-  
-  HttpServer::new(|| {
-    App::new()
-      .service(server::index)
-      .service(server::process_upload)
-  })
-  .bind(("0.0.0.0", 8080))?
-  .run()
-  .await
+  start_threads().await;
 }
