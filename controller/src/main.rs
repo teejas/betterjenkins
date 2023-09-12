@@ -2,9 +2,6 @@ use dotenv::dotenv;
 
 mod config;
 mod db;
-mod server;
-mod run;
-
 mod threads;
 use threads::start_threads;
 
