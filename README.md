@@ -45,9 +45,9 @@ Tasks to be executed are defined in task files such as those found in [`/control
 # Database
 
 ## Tables
-- Jobs (`jobs`)
+- `jobs`
   - Schema: (id, name, job_count [if there are duplicate instances of the same job], author, description)
-- Tasks (`tasks`)
+- `tasks`
   - Schema: (id, job_name, stage_number, definition)
 
 
