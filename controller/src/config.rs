@@ -8,7 +8,7 @@ use sqlx::{
   Row
 };
 
-use crate::db::{DBConn};
+use crate::db::{connect_to_db, DBConn};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
@@ -23,12 +23,19 @@ pub struct Config {
 
 impl Config {
   async fn init(&mut self) -> Result<(), Box<dyn Error>> {
-    self.db_connection = Some(DBConn::new().await?.conn);
+    if let Some(db) = connect_to_db().await {
+      self.db_connection = Some(db.conn);
+    } else {
+      self.db_connection = None;
+    }
     Ok(())
   }
 
   pub async fn push_tasks(&mut self) -> Result<(), Box<dyn Error>> {
     self.init().await?;
+    if self.db_connection.is_none() {
+      Err("Postgres database: no connection")?;
+    }
     let q = sqlx::query(
         "
 SELECT (job_count) FROM jobs WHERE name = $1 ORDER BY job_count DESC LIMIT 1;

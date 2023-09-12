@@ -1,8 +1,6 @@
-use actix_web::{rt, App, HttpServer, dev::Server};
-use dotenv::dotenv;
+use actix_web::{App, HttpServer};
 use tokio::{self, signal, task};
 use tokio_util::sync::CancellationToken;
-use std::error::Error;
 
 use crate::run::run_executors;
 use crate::server;

@@ -10,6 +10,7 @@ I want to build a better version of Jenkins in Rust. Part of the project is lear
 5. Allow for "workspaces" to share files across different tasks or stages of a job
    1. This would enable CI/CD capabilities where one stage builds a docker image using the files in a workspace, another stage runs tests agains that docker image, and a final stage deploys the image
    2. I'm thinking of some bucket integration, maybe use `minio` for testing. [in progress]
+6. Have all the executors write their stdout somewhere, either back to the database or into some bucket storage
 
 # Database
 
@@ -43,3 +44,9 @@ cd /executor
 docker build -t betterjenkins:executor .
 docker run --network betterjenkins_default betterjenkins:executor
 ```
+
+Create a Kubernetes cluster anywhere (i.e. minikube, AWS, GCP, microk8s, etc), properly configure the `~/.kube/config`, make sure there are no existing namespaces `betterjenkins`, then run `kubectl apply -k kustomize/` to deploy all the resources for betterjenkins.
+
+Run `kubectl port-forward svc/betterjenkins-server 8080` to connect to the controller on http://localhost:8080. Similarly, the db can be connected to using `kubectl port-forward svc/betterjenkins-db 5432`.
+
+An easy way to develop against a Kubernetes cluster is using `mirrord` to connect local binaries to remote k8s resources such as pods or deployments. Run `cargo build --release && mirrord exec -t deployment/betterjenkins-db ./target/release/betterjenkins` to get your local version of betterjenkins running against k8s resources (such as the Postgres server).

@@ -11,8 +11,16 @@ pub struct DBConn {
   pub conn: PgConnection
 }
 
+pub async fn connect_to_db() -> Option<DBConn> {
+  let try_db = DBConn::new().await.ok();
+  if try_db.is_none() {
+    eprintln!("Error connecting to database.");
+  }
+  try_db
+}
+
 impl DBConn {
-  pub async fn new() -> Result<DBConn, Box<dyn Error>> {
+  pub async fn new() -> Result<DBConn, Box<dyn Error + Send + Sync>> {
     let mut db = PgConnection::connect(
       &format!("postgresql://{}:{}@{}/{}", 
         env::var("DB_USER").unwrap(),

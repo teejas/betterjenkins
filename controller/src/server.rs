@@ -1,8 +1,15 @@
-use std::error::Error;
-use std::path::PathBuf;
+use std::{
+  error::Error,
+  path::PathBuf
+};
 use actix_files as fs;
-use actix_web::http::header::{ContentDisposition, DispositionType};
-use actix_web::{get, post, App, web::Payload, HttpRequest, HttpServer};
+use actix_web::{
+  get, 
+  post, 
+  http::header::{ContentDisposition, DispositionType},
+  web::Payload, 
+  HttpRequest
+};
 
 use crate::config::Config;
 
