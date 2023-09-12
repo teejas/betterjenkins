@@ -1,10 +1,16 @@
+use k8s_openapi::api::batch::v1::Job;
+use kube::{Api, Client, api::ListParams, core::params::PostParams};
+use sqlx::Row;
 use actix_web::{App, HttpServer};
 use tokio::{self, signal, task};
 use tokio_util::sync::CancellationToken;
 
-mod run;
-use run::run_executors;
+use crate::db::connect_to_db;
+use crate::workspace::WorkspaceManager;
+
 mod server;
+mod executors;
+use executors::run_executors;
 
 async fn shutdown<T>(
   token: CancellationToken, 
@@ -30,8 +36,7 @@ Press Ctrl+C to exit gracefully
 
   // Clone the token for use in another task
   let run_token = token.clone();
-
-  // Task 1 - Wait for token cancellation or a long time
+  // Wait for token cancellation or a long time
   let mut run_thread = tokio::spawn(async move {
     let mut tasks_count: i64 = 0;
     loop {
@@ -44,6 +49,11 @@ Press Ctrl+C to exit gracefully
         }
       }
     }
+  });
+
+  // create thread which runs the workspace manager
+  let workspace = tokio::spawn(async {
+    WorkspaceManager::new();
   });
 
   let serve = HttpServer::new(|| {
