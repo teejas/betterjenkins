@@ -4,7 +4,7 @@ I want to build a better version of Jenkins in Rust. Part of the project is lear
 
 # Architecture
 
-`betterjenkins` runs best on Kubernetes but can be tested using docker-compose as explained below. The reason for it being more well-suited for container orchestration is because `betterjenkins` is itself a container orchestrator, specifically for executing tasks described as shell commands (i.e. `/controller/examples/sample.yaml`), and a multi-service application. The permanent services `betterjenkins` runs is the controller, or `betterjenkins-server`, and the database server, or `betterjenkins-db`.
+`betterjenkins` runs best on Kubernetes but can be tested using docker-compose as explained below. The reason for it being more well-suited for container orchestration is because `betterjenkins` is itself a container orchestrator, specifically for executing tasks described as shell commands (i.e. [`/controller/examples/sample.yaml`](https://github.com/teejas/betterjenkins/blob/main/controller/examples/sample.yaml)), and a multi-service application. The permanent services `betterjenkins` runs is the controller, or `betterjenkins-server`, and the database server, or `betterjenkins-db`.
 
 # Deploying
 
@@ -14,7 +14,7 @@ Create a Kubernetes cluster anywhere (i.e. minikube, AWS, GCP, microk8s, etc), p
 
 Run `kubectl port-forward svc/betterjenkins-server 8080` to connect to the controller on http://localhost:8080. Similarly, the db can be connected to using `kubectl port-forward svc/betterjenkins-db 5432`.
 
-An easy way to develop against a Kubernetes cluster is using `mirrord` to connect local binaries to remote k8s resources such as pods or deployments. Run `cargo build && mirrord exec -t deployment/betterjenkins-db ./target/debug/betterjenkins` to get your local version of betterjenkins running against k8s resources (such as the Postgres server).
+An easy way to develop against a Kubernetes cluster is using [`mirrord`](https://mirrord.dev/) to connect local binaries to remote k8s resources such as pods or deployments. Run `cargo build && mirrord exec -t deployment/betterjenkins-db ./target/debug/betterjenkins` to get your local version of betterjenkins running against k8s resources (such as the Postgres server).
 
 ## docker-compose [for development only]
 `docker-compose up` to spin up a Postgres server and betterjenkins controller.
@@ -30,7 +30,7 @@ docker run --network betterjenkins_default betterjenkins:executor
 
 `betterjenkins` allows you to add tasks to be executed by defining them in task files, which further describe the order in which tasks should be executed. This will provide the basis for adding CI/CD capabilities to `betterjenkins`, allowing tasks to share access to a common workspace (such as files necessary to build an application binary).
 
-Tasks to be executed are defined in task files such as those found in `/controller/examples`. Once the steps for deploying are complete go to the controller main page at http://localhost:8080. Task files can be uploaded here, tasks are then parsed out of the file and added to the Postgres database, and executors are automatically on Kubernetes launched by the controller to complete all tasks in the database.
+Tasks to be executed are defined in task files such as those found in [`/controller/examples`](https://github.com/teejas/betterjenkins/tree/main/controller/examples). Once the steps for deploying are complete go to the controller main page at http://localhost:8080. Task files can be uploaded here, tasks are then parsed out of the file and added to the Postgres database, and executors are automatically on Kubernetes launched by the controller to complete all tasks in the database.
 
 # To-do
 1. Create a Rust program which can parse a file (i.e. toml or yaml) for tasks, then add those tasks to a Postgres DB [done]
