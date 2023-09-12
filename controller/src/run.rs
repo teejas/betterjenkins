@@ -2,7 +2,7 @@ use k8s_openapi::api::batch::v1::Job;
 use kube::{Api, Client, api::ListParams, core::params::PostParams};
 use sqlx::Row;
 
-use crate::db::{connect_to_db, DBConn};
+use crate::db::connect_to_db;
 
 pub async fn run_executors(last_tasks_count: i64) -> i64 {
   let client = Client::try_default().await.unwrap();

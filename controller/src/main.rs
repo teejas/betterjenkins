@@ -1,5 +1,4 @@
 use dotenv::dotenv;
-use tokio;
 
 mod config;
 mod db;

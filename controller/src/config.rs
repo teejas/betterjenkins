@@ -8,7 +8,7 @@ use sqlx::{
   Row
 };
 
-use crate::db::{connect_to_db, DBConn};
+use crate::db::connect_to_db;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
