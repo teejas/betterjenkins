@@ -41,9 +41,9 @@ pub async fn run_executors(last_tasks_count: i64) -> i64 {
       }
 
       tasks_count
-      
+
     } else {
-      println!("No tasks or last task not completed");
+      println!("No tasks or last task not yet started");
       std::thread::sleep(std::time::Duration::from_secs(5));
       0
     }

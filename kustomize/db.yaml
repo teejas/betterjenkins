@@ -1,10 +1,32 @@
+kind: PersistentVolume
 apiVersion: v1
-kind: ConfigMap
 metadata:
-  name: psql-initdb-config
-data:
-  create_tables.sql: |
-    CREATE DATABASE betterjenkins WITH OWNER = postgres;
+  name:  betterjenkins-db  # Sets PV's name
+  labels:
+    type: local  # Sets PV's type to local
+    app:  betterjenkins-db
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi # Sets PV Volume
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/data"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name:  betterjenkins-db  # Sets name of PVC
+  labels:
+    app:  betterjenkins-db
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany  # Sets read and write access
+  resources:
+    requests:
+      storage: 5Gi  # Sets volume size
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -23,12 +45,23 @@ spec:
         app: betterjenkins-db
     spec:
       volumes:
-      - name: psql-initdb
-        configMap:
-          name: psql-initdb-config
+      - name: betterjenkins-vol
+        persistentVolumeClaim:
+          claimName: betterjenkins-db
       containers:
       - name: betterjenkins-db
         image: postgres:15-alpine
+        lifecycle:
+            postStart:
+              exec:
+                command: [
+                  "/bin/sh",
+                  "-c",
+                  "sleep 20 && echo 
+                    \"SELECT 'CREATE DATABASE betterjenkins WITH OWNER = ''postgres''' 
+                    WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'betterjenkins')\\gexec\" 
+                    | PGPASSWORD=$POSTGRES_PASSWORD psql -w -U $POSTGRES_USER"
+                ]
         ports:
         - containerPort: 5432
         env:
@@ -36,9 +69,11 @@ spec:
           value: postgres
         - name: POSTGRES_PASSWORD
           value: postgres
+        - name: POSTGRES_DB
+          value: postgres
         volumeMounts:
-        - name: psql-initdb
-          mountPath: /docker-entrypoint-initdb.d
+        - mountPath: /var/lib/postgresql/data
+          name: betterjenkins-vol
 ---
 apiVersion: v1
 kind: Service

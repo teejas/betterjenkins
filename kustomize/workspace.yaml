@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: betterjenkins-minio-server
+  labels:
+    app: betterjenkins-minio-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: betterjenkins-minio-server
+  template:
+    metadata:
+      labels:
+        app: betterjenkins-minio-server
+    spec:
+      serviceAccountName: betterjenkins
+      containers:
+      - name: minio
+        image: quay.io/minio/minio:latest
+        command:
+        - /bin/bash
+        - -c
+        args: 
+        - minio server /data --console-address :9090
+        volumeMounts:
+        - mountPath: /data
+          name: localvolume # Corresponds to the `spec.volumes` Persistent Volume
+      volumes:
+      - name: localvolume
+        hostPath: # MinIO generally recommends using locally-attached volumes
+          path: /mnt/disk1/data # Specify a path to a local drive or volume on the Kubernetes worker node
+          type: DirectoryOrCreate # The path to the last directory must exist
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: betterjenkins-minio-server
+  labels:
+    app: betterjenkins-minio-server
+spec:
+  selector:
+    app: betterjenkins-minio-server
+  ports:
+  - protocol: TCP
+    port: 9090
+    targetPort: 9090
