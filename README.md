@@ -4,7 +4,7 @@ I want to build a better version of Jenkins in Rust. Part of the project is lear
 
 # Architecture
 
-`betterjenkins` runs best on Kubernetes but can be tested using docker-compose as explained below. The reason for it being more well-suited for container orchestration is because `betterjenkins` is itself a container orchestrator, specifically for tasks described as shell commands (i.e. `/controller/examples/sample.yaml`), and a multi-service application. The permanent services `betterjenkins` runs is the controller, or `betterjenkins-server`, and the database server, or `betterjenkins-db`.
+`betterjenkins` runs best on Kubernetes but can be tested using docker-compose as explained below. The reason for it being more well-suited for container orchestration is because `betterjenkins` is itself a container orchestrator, specifically for executing tasks described as shell commands (i.e. `/controller/examples/sample.yaml`), and a multi-service application. The permanent services `betterjenkins` runs is the controller, or `betterjenkins-server`, and the database server, or `betterjenkins-db`.
 
 # Deploying
 
