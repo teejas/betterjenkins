@@ -37,11 +37,11 @@ Tasks to be executed are defined in task files such as those found in [`/control
 - [x] Create a web server that allows users to drop .yaml files and add tasks to the queue. [done]
 - [x] Create a simple Python program which takes tasks off the queue and executes them (tasks are just shell commands) [done]
 - [x] Expand controller logic to interact with the Kubernetes control plane in order to automatically create new executor Jobs if there are any rows in the "tasks" table [done]
-- [] Allow for "workspaces" to share files across different tasks or stages of a job
+- [ ] Allow for "workspaces" to share files across different tasks or stages of a job
    - This would enable CI/CD capabilities where one stage builds a docker image using the files in a workspace, another stage runs tests agains that docker image, and a final stage deploys the image
    - I'm thinking of some bucket integration, maybe use `minio` for testing. [in progress]
-- [] Have all the executors write their stdout somewhere, either back to the database or into some bucket storage [in progress]
-- [] Have server return data related to what tasks are in the table, logs from the executors, and a list of previous jobs. [not started]
+- [ ] Have all the executors write their stdout somewhere, either back to the database or into some bucket storage [in progress]
+- [ ] Have server return data related to what tasks are in the table, logs from the executors, and a list of previous jobs. [not started]
 
 # Database
 
