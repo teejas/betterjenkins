@@ -50,9 +50,10 @@ Tasks to be executed are defined in task files such as those found in [`/control
 - `tasks`
   - Schema: (id, job_name, stage_number, definition)
 
+# Contributing
 
-# Files
-`/controller/src` contains all the Rust files, this includes the web server and logic for parsing yaml task files and enqueueing to the task (as a PostgreSQL database)
+## Understanding the codebase
+`/controller/src` contains all the Rust files for the controller, this includes the web server, logic for parsing yaml task files and enqueueing to the task (as a PostgreSQL database), and interacting with the Kubernetes API
 
 `/controller/web` contains any static files served by the web server
 
@@ -64,8 +65,8 @@ Tasks to be executed are defined in task files such as those found in [`/control
 
 `/kustomize` contains K8s manifests to deploy the betterjenkins and Postgres servers
 
-# Contributing
+## Licensing
 
 This project welcomes contributions in the form of issues and pull requests. 
 
-`betterjenkins` is lincensed under the [GNU General Public License v3.0](https://spdx.org/licenses/GPL-3.0-or-later.html).
+`betterjenkins` is licensed under the [GNU General Public License v3.0](https://spdx.org/licenses/GPL-3.0-or-later.html).
