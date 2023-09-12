@@ -63,3 +63,9 @@ Tasks to be executed are defined in task files such as those found in [`/control
 `/executor` contains all files related to the task executor, this includes a Dockerfile to build the executor image and a Python script which simply takes a task from the "tasks" SQL table and runs it
 
 `/kustomize` contains K8s manifests to deploy the betterjenkins and Postgres servers
+
+# Contributing
+
+This project welcomes contributions in the form of issues and pull requests. 
+
+`betterjenkins` is lincensed under the [GNU General Public License v3.0](https://spdx.org/licenses/GPL-3.0-or-later.html).
