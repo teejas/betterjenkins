@@ -33,14 +33,15 @@ docker run --network betterjenkins_default betterjenkins:executor
 Tasks to be executed are defined in task files such as those found in [`/controller/examples`](https://github.com/teejas/betterjenkins/tree/main/controller/examples). Once the steps for deploying are complete go to the controller main page at http://localhost:8080. Task files can be uploaded here, tasks are then parsed out of the file and added to the Postgres database, and executors are automatically on Kubernetes launched by the controller to complete all tasks in the database.
 
 # To-do
-1. Create a Rust program which can parse a file (i.e. toml or yaml) for tasks, then add those tasks to a Postgres DB [done]
-2. Create a web server that allows users to drop .yaml files and add tasks to the queue. [done]
-3. Create a simple Python program which takes tasks off the queue and executes them (tasks are just shell commands) [done]
-4. Expand controller logic to interact with the Kubernetes control plane in order to automatically create new executor Jobs if there are any rows in the "tasks" table [done]
-5. Allow for "workspaces" to share files across different tasks or stages of a job
-   1. This would enable CI/CD capabilities where one stage builds a docker image using the files in a workspace, another stage runs tests agains that docker image, and a final stage deploys the image
-   2. I'm thinking of some bucket integration, maybe use `minio` for testing. [in progress]
-6. Have all the executors write their stdout somewhere, either back to the database or into some bucket storage [in progress]
+- [x] Create a Rust program which can parse a file (i.e. toml or yaml) for tasks, then add those tasks to a Postgres DB [done]
+- [x] Create a web server that allows users to drop .yaml files and add tasks to the queue. [done]
+- [x] Create a simple Python program which takes tasks off the queue and executes them (tasks are just shell commands) [done]
+- [x] Expand controller logic to interact with the Kubernetes control plane in order to automatically create new executor Jobs if there are any rows in the "tasks" table [done]
+- [] Allow for "workspaces" to share files across different tasks or stages of a job
+   - This would enable CI/CD capabilities where one stage builds a docker image using the files in a workspace, another stage runs tests agains that docker image, and a final stage deploys the image
+   - I'm thinking of some bucket integration, maybe use `minio` for testing. [in progress]
+- [] Have all the executors write their stdout somewhere, either back to the database or into some bucket storage [in progress]
+- [] Have server return data related to what tasks are in the table, logs from the executors, and a list of previous jobs. [not started]
 
 # Database
 

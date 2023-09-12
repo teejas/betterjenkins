@@ -22,6 +22,10 @@ async fn shutdown<T>(
 }
 
 pub async fn start_threads() {
+  println!("
+Starting betterjenkins controller...
+Press Ctrl+C to exit gracefully
+  ");
   let token = CancellationToken::new();
 
   // Clone the token for use in another task
@@ -50,7 +54,6 @@ pub async fn start_threads() {
     .bind(("0.0.0.0", 8080))
     .unwrap()
     .run();
-  // let mut serve_handle = serve.handle();
   let mut serve_handle = tokio::spawn(async move { serve.await.unwrap() });
 
   match signal::ctrl_c().await {
