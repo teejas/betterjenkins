@@ -39,9 +39,15 @@ metadata:
   labels:
     app: betterjenkins-minio-server
 spec:
+  type: NodePort
   selector:
     app: betterjenkins-minio-server
   ports:
-  - protocol: TCP
+  - name: server
+    protocol: TCP
     port: 9090
     targetPort: 9090
+  - name: api
+    protocol: TCP
+    port: 9000
+    targetPort: 9000

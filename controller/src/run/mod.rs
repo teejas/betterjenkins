@@ -12,10 +12,7 @@ mod server;
 mod executors;
 use executors::run_executors;
 
-async fn shutdown<T>(
-  token: CancellationToken, 
-  run_handle: &mut task::JoinHandle<T>, 
-  serve_handle: &mut task::JoinHandle<T>) {
+async fn shutdown<T>(token: CancellationToken, handles: Vec<&mut task::JoinHandle<T>>) {
     // Cancel the original token after a small delay
     tokio::spawn(async move {
       tokio::time::sleep(std::time::Duration::from_millis(10)).await;
@@ -23,8 +20,9 @@ async fn shutdown<T>(
     });
 
   // Wait for tasks to complete
-  run_handle.await.unwrap();
-  serve_handle.await.unwrap();
+  for handle in handles {
+    handle.await.unwrap();
+  }
 }
 
 pub async fn start_threads() {
@@ -33,6 +31,25 @@ Starting betterjenkins controller...
 Press Ctrl+C to exit gracefully
   ");
   let token = CancellationToken::new();
+
+  // create thread which runs the workspace manager
+  let ws_token = token.clone();
+  let mut workspace = tokio::spawn(async move {
+    if let Ok(mut wm) = WorkspaceManager::new().await {
+      loop {
+        tokio::select! {
+          _ = ws_token.cancelled() => {
+            break
+          }
+          _ = wm.create_workspace_dirs() => {
+            wm.cleanup_workspace_dirs().await;
+          }
+        };
+      }
+    } else {
+      eprintln!("Error setting up workspace manager.");
+    }
+  });
 
   // Clone the token for use in another task
   let run_token = token.clone();
@@ -51,11 +68,6 @@ Press Ctrl+C to exit gracefully
     }
   });
 
-  // create thread which runs the workspace manager
-  let workspace = tokio::spawn(async {
-    WorkspaceManager::new();
-  });
-
   let serve = HttpServer::new(|| {
     App::new()
       .service(server::index)
@@ -69,11 +81,11 @@ Press Ctrl+C to exit gracefully
   match signal::ctrl_c().await {
     Ok(()) => {
       println!("Exiting the betterjenkins controller...");
-      shutdown(token, &mut run_thread, &mut serve_handle).await;
+      shutdown(token, vec![&mut run_thread, &mut serve_handle, &mut workspace]).await;
     },
     Err(err) => {
       eprintln!("Unable to listen for shutdown signal: {}", err);
-      shutdown(token, &mut run_thread, &mut serve_handle).await;
+      shutdown(token, vec![&mut run_thread, &mut serve_handle, &mut workspace]).await;
     },
   }
 }
