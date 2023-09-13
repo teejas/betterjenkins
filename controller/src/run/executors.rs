@@ -21,6 +21,8 @@ pub async fn run_executors(last_tasks_count: i64) -> i64 {
     println!("Got last tasks count: {:?}", last_tasks_count);
     println!("Got tasks count: {:?}", tasks_count);
 
+    db.close().await;
+
     if tasks_count > 0 && tasks_count != last_tasks_count {
       let f = std::fs::File::open("k8s_manifests/executor/executor-job.yaml").unwrap();
       let mut d: Job = serde_yaml::from_reader(f).unwrap();

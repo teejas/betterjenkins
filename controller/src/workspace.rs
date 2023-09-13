@@ -9,7 +9,7 @@ use crate::db::{connect_to_db, DBConn};
 
 pub struct WorkspaceManager {
   bucket: Bucket,
-  db: DBConn
+  pub db: DBConn
 }
 
 impl WorkspaceManager {

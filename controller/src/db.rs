@@ -60,4 +60,9 @@ description VARCHAR(255)
       conn: db
     })
   }
+
+  pub async fn close(self) -> Result<(), Box<dyn Error + Send + Sync>> {
+    self.conn.close().await?;
+    Ok(())
+  }
 }

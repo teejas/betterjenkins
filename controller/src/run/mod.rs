@@ -25,6 +25,9 @@ impl Run {
       loop {
         tokio::select! {
           _ = ws_token.cancelled() => {
+            if let Some(wm) = wm_opt {
+              wm.db.close().await;
+            }
             break
           }
           _ = tokio::time::sleep(std::time::Duration::from_secs(5)) => {
