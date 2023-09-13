@@ -90,7 +90,8 @@ impl WorkspaceManager {
       let c_iter = result.contents.iter();
       for content in c_iter {
         let mut dir_name = content.key.clone();
-        dir_name.pop(); // remove trailing slash
+        dir_name = dir_name.split('/').nth(0).unwrap().to_string(); 
+        // dir_name.pop(); // remove trailing slash
         println!("dir name: {:?}", dir_name);
         let q_name = dir_name.split('_').nth(0).unwrap();
         let q_count = dir_name.split('_').last().unwrap();
