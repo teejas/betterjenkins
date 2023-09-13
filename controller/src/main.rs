@@ -3,11 +3,12 @@ use dotenv::dotenv;
 mod config;
 mod db;
 mod run;
-use run::start_threads;
+use run::Run;
 mod workspace;
 
 #[tokio::main]
 async fn main() {
   dotenv().ok();
-  start_threads().await;
+  let r = Run;
+  r.run().await;
 }
