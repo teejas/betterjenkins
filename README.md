@@ -39,10 +39,13 @@ Tasks to be executed are defined in task files such as those found in [`/control
 - [x] Expand controller logic to interact with the Kubernetes control plane in order to automatically create new executor Jobs if there are any rows in the "tasks" table [done]
 - [ ] Allow for "workspaces" to share files across different tasks or stages of a job [in progress]
    - This would enable CI/CD capabilities where one stage builds a docker image using the files in a workspace, another stage runs tests agains that docker image, and a final stage deploys the image
-   - I'm thinking of some bucket integration, maybe use `minio` for testing.
-- [ ] Have all the executors write their stdout somewhere, either back to the database or into some bucket storage [in progress]
+   - [x] I'm thinking of some bucket integration, maybe use `minio`.
+- [x] Have all the executors write their stdout somewhere, either back to the database or into some bucket storage [done]
 - [ ] Have server return data related to what tasks are in the table, logs from the executors, and a list of previous jobs. [not started]
+  - [ ] Additionally add a webpage to display the data
 - [ ] Create a Github Webhook handler so that the controller can watch Github repositories for task files and automatically pick them up. [not started]
+- [ ] Improve logging for the controller. [not started]
+- [ ] Move the complicated logic from the executor Python script into the Rust web server as endpoints. [not started]
 
 # Database
 

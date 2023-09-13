@@ -41,7 +41,8 @@ Press Ctrl+C to exit gracefully
           _ = ws_token.cancelled() => {
             break
           }
-          _ = wm.create_workspace_dirs() => {
+          _ = tokio::time::sleep(std::time::Duration::from_secs(5)) => {
+            let _ = wm.create_workspace_dirs().await;
             let _ = wm.cleanup_workspace_dirs().await;
           }
         };

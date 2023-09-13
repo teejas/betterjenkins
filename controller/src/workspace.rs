@@ -27,7 +27,7 @@ impl WorkspaceManager {
         "betterjenkins",
         Region::Custom {
           region: "".to_owned(),
-          endpoint: env::var("MINIO_API").unwrap().to_owned(),
+          endpoint: env::var("MINIO_URL").unwrap().to_owned(),
         },
         creds.clone()
       ).unwrap();
@@ -92,10 +92,18 @@ impl WorkspaceManager {
         let mut dir_name = content.key.clone();
         dir_name.pop(); // remove trailing slash
         println!("dir name: {:?}", dir_name);
-        let query_response = sqlx::query("SELECT COUNT(*) FROM jobs WHERE name = $1;")
-          .bind(&dir_name)
+        let q_name = dir_name.split('_').nth(0).unwrap();
+        let q_count = dir_name.split('_').last().unwrap();
+        println!("job name: {:?}, job count: {:?}", q_name, q_count);
+        let query_response = sqlx::query(
+          "
+SELECT COUNT(*) FROM jobs WHERE name = $1 AND job_count = $2::INTEGER;
+          ")
+          .bind(&q_name)
+          .bind(&q_count)
           .fetch_one(&mut self.db.conn)
-          .await?;
+          .await
+          .unwrap();
         let job_count = query_response.get::<i64, &str>("count");
         println!("job count: {:?}", job_count);
         if job_count == 0 {
