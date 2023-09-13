@@ -14,7 +14,7 @@ pub struct WorkspaceManager {
 
 impl WorkspaceManager {
   pub async fn new() -> Result<WorkspaceManager, Box<dyn Error + Send + Sync>> {
-    if let Some(mut db) = connect_to_db().await {
+    if let Some(db) = connect_to_db().await {
       // should connect to minio and pg db, create
       let creds: Credentials = Credentials {
         access_key: Some(env::var("MINIO_ACCESS_KEY").unwrap().to_string()), 
@@ -68,11 +68,11 @@ impl WorkspaceManager {
     let query_response = sqlx::query("SELECT name || '_' || job_count AS name FROM jobs;")
       .fetch_all(&mut self.db.conn)
       .await?;
-    let mut q_iter = query_response.iter();
-    while let Some(row) = q_iter.next() {
+    let q_iter = query_response.iter();
+    for row in q_iter {
       let job = row.get::<String, &str>("name");
       println!("job: {:?}", job);
-      self.bucket.put_object(
+      let _ = self.bucket.put_object(
         format!("/{}/", job), 
         "Start of betterjenkins executor logfile".as_bytes()
       ).await;
@@ -85,10 +85,10 @@ impl WorkspaceManager {
     // should check existing dirs and if there isnt a corresponding job in the jobs table, 
     //  delete the dir
     let results = self.bucket.list(String::new(), None).await?;
-    let mut r_iter = results.iter();
-    while let Some(result) = r_iter.next() {
-      let mut c_iter = result.contents.iter();
-      while let Some(content) = c_iter.next() {
+    let r_iter = results.iter();
+    for result in r_iter {
+      let c_iter = result.contents.iter();
+      for content in c_iter {
         let mut dir_name = content.key.clone();
         dir_name.pop(); // remove trailing slash
         println!("dir name: {:?}", dir_name);
