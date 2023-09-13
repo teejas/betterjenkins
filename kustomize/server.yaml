@@ -34,7 +34,7 @@ spec:
           value: minioadmin
         - name: MINIO_SECRET_KEY
           value: minioadmin
-        - name: MINIO_API
+        - name: MINIO_URL
           value: http://betterjenkins-minio-server:9000
 ---
 apiVersion: v1

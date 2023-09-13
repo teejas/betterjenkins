@@ -46,6 +46,7 @@ Tasks to be executed are defined in task files such as those found in [`/control
 - [ ] Create a Github Webhook handler so that the controller can watch Github repositories for task files and automatically pick them up. [not started]
 - [ ] Improve logging for the controller. [not started]
 - [ ] Move the complicated logic from the executor Python script into the Rust web server as endpoints. [not started]
+- [ ] Add testing to Rust code. [not started]
 
 # Database
 
