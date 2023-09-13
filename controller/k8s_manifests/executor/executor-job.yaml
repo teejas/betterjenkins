@@ -21,5 +21,11 @@ spec:
           value: postgres
         - name: DB_PASSWORD
           value: postgres
+        - name: MINIO_ACCESS_KEY
+          value: minioadmin
+        - name: MINIO_SECRET_KEY
+          value: minioadmin
+        - name: MINIO_URL
+          value: betterjenkins-minio-server:9000
       restartPolicy: Never
   backoffLimit: 5

@@ -5,4 +5,5 @@ resources:
 - namespace.yaml
 - service-account.yaml
 - db.yaml
+- workspace.yaml
 - server.yaml

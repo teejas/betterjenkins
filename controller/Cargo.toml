@@ -18,3 +18,4 @@ serde_yaml = "0.9"
 sqlx = { version = "0.7", features = [ "runtime-tokio", "tls-native-tls", "postgres", "macros" ] }
 tokio = { version = "1", features = ["full"] }
 tokio-util = "0.7.8"
+rust-s3 = "0.33.0"

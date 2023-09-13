@@ -2,6 +2,9 @@ use k8s_openapi::api::batch::v1::Job;
 use kube::{Api, Client, api::ListParams, core::params::PostParams};
 use sqlx::Row;
 
+
+
+
 use crate::db::connect_to_db;
 
 pub async fn run_executors(last_tasks_count: i64) -> i64 {
@@ -41,9 +44,9 @@ pub async fn run_executors(last_tasks_count: i64) -> i64 {
       }
 
       tasks_count
-      
+
     } else {
-      println!("No tasks or last task not completed");
+      println!("No tasks or last task not yet started");
       std::thread::sleep(std::time::Duration::from_secs(5));
       0
     }
