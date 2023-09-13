@@ -35,20 +35,30 @@ Press Ctrl+C to exit gracefully
   // create thread which runs the workspace manager
   let ws_token = token.clone();
   let mut workspace = tokio::spawn(async move {
-    if let Ok(mut wm) = WorkspaceManager::new().await {
-      loop {
-        tokio::select! {
-          _ = ws_token.cancelled() => {
-            break
+    let mut wm_opt: Option<WorkspaceManager> = None;
+    loop {
+      tokio::select! {
+        _ = ws_token.cancelled() => {
+          break
+        }
+        _ = tokio::time::sleep(std::time::Duration::from_secs(5)) => {
+          wm_opt = match wm_opt {
+            Some(mut wm) => {
+              let _ = wm.create_workspace_dirs().await;
+              let _ = wm.cleanup_workspace_dirs().await;
+              Some(wm)
+            },
+            None => {
+              if let Ok(mut new_wm) = WorkspaceManager::new().await {
+                Some(new_wm)
+              } else {
+                eprintln!("Error setting up workspace manager.");
+                None
+              }
+            }
           }
-          _ = tokio::time::sleep(std::time::Duration::from_secs(5)) => {
-            let _ = wm.create_workspace_dirs().await;
-            let _ = wm.cleanup_workspace_dirs().await;
-          }
-        };
-      }
-    } else {
-      eprintln!("Error setting up workspace manager.");
+        }
+      };
     }
   });
 
